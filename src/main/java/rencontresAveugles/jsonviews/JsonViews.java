@@ -14,6 +14,10 @@ public class JsonViews {
 
 	}
 	
+	public static class Image extends Simple {
+
+	}
+	
 	public static class UserWithMessages extends User {
 
 	}

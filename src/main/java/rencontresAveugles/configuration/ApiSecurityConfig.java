@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 public class ApiSecurityConfig {
@@ -52,6 +53,14 @@ public class ApiSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+    
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver() {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        resolver.setMaxUploadSizePerFile(10240000); // Taille maximale du fichier en octets (10 Mo dans cet exemple)
+//        return resolver;
+//    }
+
 
 
     @Bean

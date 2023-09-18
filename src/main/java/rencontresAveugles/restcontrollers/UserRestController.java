@@ -1,11 +1,15 @@
 package rencontresAveugles.restcontrollers;
 
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,13 +19,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import rencontresAveugles.entities.User;
+import rencontresAveugles.entities.Image;
 import rencontresAveugles.jsonviews.JsonViews;
 import rencontresAveugles.services.UserService;
 
@@ -70,6 +77,41 @@ public class UserRestController {
 		userSrv.create(user);
 		return user;
 	}
+	
+//	@PostMapping(value = {"/addUser"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+//	@JsonView(JsonViews.User.class)
+//	@ResponseStatus(code = HttpStatus.CREATED)
+//	public User createImage(@Valid @RequestPart("user") User user,
+//			@RequestPart("imageFile") MultipartFile[] file,
+//			BindingResult br) {
+//		if (br.hasErrors()) {
+//			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//		}
+//		Set<Image> images;
+//		try {
+//			images = uploadImage(file);
+//			user.setPhotos(images);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//			userSrv.create(user);
+//			return user;
+//	}
+//	
+//	public Set<Image> uploadImage (MultipartFile[] multipartFiles) throws IOException{
+//		Set<Image> images = new HashSet<>();
+//		
+//		for (MultipartFile file: multipartFiles) {
+//			Image image = new Image ();
+//			image.setNom(file.getOriginalFilename());
+//			image.setType(file.getContentType());
+//			image.setImageByte(file.getBytes());
+//			images.add(image);
+//		}
+//		return images;
+//		
+//	}
 	
 	@PutMapping("/{id}")
 	@JsonView(JsonViews.UsertWithAll.class)

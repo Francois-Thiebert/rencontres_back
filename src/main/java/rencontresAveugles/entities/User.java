@@ -81,6 +81,9 @@ public class User implements UserDetails{
 	@Enumerated(EnumType.ORDINAL)
 	@JsonView(JsonViews.Simple.class)
 	private Role role;
+	@OneToMany(mappedBy = "user")
+	@JsonView(JsonViews.UsertWithAll.class)
+	private Set<Image> photos;
 	
 	public User() {
 		super();
@@ -93,6 +96,14 @@ public class User implements UserDetails{
 		this.login = login;
 		this.password = password;
 		this.role = role;
+	}
+
+	public Set<Image> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(Set<Image> photos) {
+		this.photos = photos;
 	}
 
 	public Long getId() {

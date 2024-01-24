@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -53,25 +54,9 @@ public class User implements UserDetails{
 	@Column(name = "age", nullable = false)
 	@JsonView(JsonViews.Simple.class)
 	private int age;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "reponse_profil", foreignKey = @ForeignKey(name = "reponse_profil_fk"))
+	@OneToMany(mappedBy = "user")
 	@JsonView(JsonViews.UsertWithAll.class)
-	private Reponse reponse;
-	@Column(name = "photo1", nullable = true)
-	@JsonView({JsonViews.UsertWithAll.class, JsonViews.Match.class,JsonViews.Message.class})
-	private String photo1;
-	@Column(name = "photo2", nullable = true)
-	@JsonView(JsonViews.UsertWithAll.class)
-	private String photo2;
-	@Column(name = "photo3", nullable = true)
-	@JsonView(JsonViews.UsertWithAll.class)
-	private String photo3;
-	@Column(name = "photos4", nullable = true)
-	@JsonView(JsonViews.UsertWithAll.class)
-	private String[] photos4;
-	@Column(name = "photos5", nullable = true)
-	@JsonView(JsonViews.UsertWithAll.class)
-	private String[] photos5;
+	private Set<Reponse> reponses;
 	@Column (name = "login", nullable = false, unique = true)
 	@JsonView(JsonViews.Simple.class)
 	private String login;
@@ -88,15 +73,25 @@ public class User implements UserDetails{
 	public User() {
 		super();
 	}
-	
-	public User(String prenom, int age, String login, String password, Role role) {
+
+	public User(Set<Match> matchs1, Set<Match> matchs2, Set<Message> messagesEmis, Set<Message> messagesReçus,
+			String prenom, int age, Set<Reponse> reponses, String photo1, String photo2, String photo3, String[] photos4,
+			String[] photos5, String login, String password, Role role, Set<Image> photos) {
 		super();
+		this.matchs1 = matchs1;
+		this.matchs2 = matchs2;
+		this.messagesEmis = messagesEmis;
+		this.messagesReçus = messagesReçus;
 		this.prenom = prenom;
 		this.age = age;
+		this.reponses = reponses;
 		this.login = login;
 		this.password = password;
 		this.role = role;
+		this.photos = photos;
 	}
+
+
 
 	public Set<Image> getPhotos() {
 		return photos;
@@ -162,53 +157,7 @@ public class User implements UserDetails{
 		this.age = age;
 	}
 
-	public Reponse getReponse() {
-		return reponse;
-	}
-
-	public void setReponse(Reponse reponse) {
-		this.reponse = reponse;
-	}
-
-	public String getPhoto1() {
-		return photo1;
-	}
-
-	public void setPhoto1(String photo1) {
-		this.photo1 = photo1;
-	}
-
-	public String getPhoto2() {
-		return photo2;
-	}
-
-	public void setPhoto2(String photo2) {
-		this.photo2 = photo2;
-	}
-
-	public String getPhoto3() {
-		return photo3;
-	}
-
-	public void setPhoto3(String photo3) {
-		this.photo3 = photo3;
-	}
-
-	public String[] getPhotos4() {
-		return photos4;
-	}
-
-	public void setPhotos4(String[] photos4) {
-		this.photos4 = photos4;
-	}
-
-	public String[] getPhotos5() {
-		return photos5;
-	}
-
-	public void setPhotos5(String[] photos5) {
-		this.photos5 = photos5;
-	}
+	
 
 	public String getLogin() {
 		return login;
@@ -232,6 +181,13 @@ public class User implements UserDetails{
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	public Set<Reponse> getReponses() {
+		return reponses;
+	}
+
+	public void setReponses(Set<Reponse> reponses) {
+		this.reponses = reponses;
 	}
 
 	@Override

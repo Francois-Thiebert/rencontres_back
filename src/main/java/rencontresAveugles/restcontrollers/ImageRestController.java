@@ -58,6 +58,12 @@ public class ImageRestController {
 		return imageSrv.getByUser(id);
 	}
 	
+	@GetMapping("/user_image1/{id}")
+	@JsonView(JsonViews.Image.class)
+	public Image getImage1ByUserId(@PathVariable Long id){
+		return imageSrv.getPhoto1ByUser(id);
+	}
+	
 	@PostMapping({""})
 	@JsonView(JsonViews.Image.class)
 	@ResponseStatus(code = HttpStatus.CREATED)

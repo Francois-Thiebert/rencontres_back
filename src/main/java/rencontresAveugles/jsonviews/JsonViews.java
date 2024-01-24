@@ -49,5 +49,9 @@ public class JsonViews {
 	public static class Reponse extends Simple {
 
 	}
+	
+	public static class Question extends Simple {
+
+	}
 
 }

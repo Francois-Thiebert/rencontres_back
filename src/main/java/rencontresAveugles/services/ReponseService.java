@@ -10,6 +10,7 @@ import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import rencontresAveugles.entities.Question;
 import rencontresAveugles.entities.Reponse;
 import rencontresAveugles.entities.User;
 import rencontresAveugles.exceptions.ReponseException;
@@ -42,8 +43,12 @@ public class ReponseService {
 		return reponseRepo.findById(id).orElseThrow(ReponseException::new);
 	}
 
-	public Reponse getByAdherent(User user) {
+	public List<Reponse> getByUser(User user) {
 		return reponseRepo.findByUser(user);
+	}
+	
+	public List<Reponse> getByQuestion(Question question) {
+		return reponseRepo.findByQuestion(question);
 	}
 	
 	public Reponse update(Reponse reponse) {
@@ -51,12 +56,9 @@ public class ReponseService {
 		Set<ConstraintViolation<Reponse>> violations = validator.validate(reponse);
 		if (violations.isEmpty()) {
 			Reponse reponseEnBase = getById(reponse.getId());
-			reponseEnBase.setReponse1(reponse.getReponse1());
-			reponseEnBase.setReponse2(reponse.getReponse2());
-			reponseEnBase.setReponse3(reponse.getReponse3());
-			reponseEnBase.setReponse4(reponse.getReponse4());
-			reponseEnBase.setReponse5(reponse.getReponse5());
-			reponseEnBase.setReponse6(reponse.getReponse6());
+			reponseEnBase.setNumeroReponse(reponse.getNumeroReponse());
+			reponseEnBase.setQuestion(reponse.getQuestion());
+			reponseEnBase.setUser(reponse.getUser());
 			return reponseRepo.save(reponseEnBase);
 		} else {
 			throw new ReponseException();

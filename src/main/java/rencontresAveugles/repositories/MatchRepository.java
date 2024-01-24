@@ -24,7 +24,7 @@ public interface MatchRepository extends JpaRepository<Match, Long>{
 	@Query("SELECT m FROM Match m WHERE (m.user1.id = :idUser1 AND m.user2.id = :idUser2) OR (m.user1.id = :idUser2 AND m.user2.id = :idUser1)")
 	List<Match> findMatchesByUserIds(@Param("idUser1") Long idUser1, @Param("idUser2") Long idUser2);
 	
-	List<Match> findByUser1AndUser2(User user1, User user2);
+	Match findByUser1AndUser2(User user1, User user2);
 	List<Match> findByUser1(User user);
 	List<Match> findByUser2(User user);
 

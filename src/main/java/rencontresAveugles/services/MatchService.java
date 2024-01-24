@@ -98,22 +98,39 @@ public class MatchService {
 		return matchs;
 	}
 	
-	public List<Match> getMatchByUsers(Long idUser1, Long idUser2) {
-		List<Match> matchs = new ArrayList<Match>();
+	public Match getMatchByUsers(Long idUser1, Long idUser2) {
+		Match match = new Match();
 		Optional<User> optionalUser1 = userRepo.findById(idUser1);
 		Optional<User> optionalUser2 = userRepo.findById(idUser2);
 		if (optionalUser1.isPresent() && optionalUser2.isPresent()) {
 		    User user1 = optionalUser1.get();
 		    User user2 = optionalUser2.get();
-		    matchs = matchRepo.findByUser1AndUser2(user1, user2);
+		    match = matchRepo.findByUser1AndUser2(user1, user2);
 		    
 		    // Utilisez user1 et user2 comme nécessaire
 		} else {
 		    // Gérez le cas où l'utilisateur n'a pas été trouvé
 		}
-		return matchs;
+		return match;
 	    
 	}
+	
+//	public List<Match> getMatchByUsers(Long idUser1, Long idUser2) {
+//		List<Match> matchs = new ArrayList<Match>();
+//		Optional<User> optionalUser1 = userRepo.findById(idUser1);
+//		Optional<User> optionalUser2 = userRepo.findById(idUser2);
+//		if (optionalUser1.isPresent() && optionalUser2.isPresent()) {
+//		    User user1 = optionalUser1.get();
+//		    User user2 = optionalUser2.get();
+//		    matchs = matchRepo.findByUser1AndUser2(user1, user2);
+//		    
+//		    // Utilisez user1 et user2 comme nécessaire
+//		} else {
+//		    // Gérez le cas où l'utilisateur n'a pas été trouvé
+//		}
+//		return matchs;
+//	    
+//	}
 	
 	
 	

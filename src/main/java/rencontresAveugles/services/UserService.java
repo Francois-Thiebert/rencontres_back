@@ -64,7 +64,7 @@ public class UserService {
 			userEnBase.setAge(user.getAge());
 			userEnBase.setLogin(user.getLogin());
 			userEnBase.setPrenom(user.getPrenom());
-			userEnBase.setReponse(user.getReponse());
+			userEnBase.setReponses(user.getReponses());
 			return userRepo.save(userEnBase);
 		} else {
 			throw new UserException();

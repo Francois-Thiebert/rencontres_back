@@ -126,9 +126,6 @@ public class UserRestController {
 		if (user.getPassword() != null) {
 			userEnBase.setPassword(user.getPassword());
 		}
-		if (user.getReponse() != null) {
-			userEnBase.setReponse(user.getReponse());
-		}
 		userEnBase.setAge(user.getAge());
 		userSrv.update(userEnBase);
 		return userEnBase;

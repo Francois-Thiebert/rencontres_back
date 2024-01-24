@@ -86,9 +86,15 @@ public class MatchRestController {
 	
 	@GetMapping("/user1/{idUser1}/user2/{idUser2}")
 	@JsonView(JsonViews.Match.class)
-	public List<Match> getMatchByUsers(@PathVariable Long idUser1, @PathVariable Long idUser2) {
+	public Match getMatchByUsers(@PathVariable Long idUser1, @PathVariable Long idUser2) {
 	    return matchSrv.getMatchByUsers(idUser1, idUser2);
 	}
+	
+//	@GetMapping("/user1/{idUser1}/user2/{idUser2}")
+//	@JsonView(JsonViews.Match.class)
+//	public List<Match> getMatchByUsers(@PathVariable Long idUser1, @PathVariable Long idUser2) {
+//	    return matchSrv.getMatchByUsers(idUser1, idUser2);
+//	}
 
 	
 	@PostMapping({"","/submit"})

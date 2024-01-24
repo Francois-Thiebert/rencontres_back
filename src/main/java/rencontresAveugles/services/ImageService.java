@@ -56,6 +56,13 @@ public class ImageService {
 		return imageRepo.findByUser(user);
 	}
 	
+	public Image getPhoto1ByUser(Long id) {
+		User user = new User();
+		user.setId(id);
+		String nom = "photo1";
+		return imageRepo.findImage1ByUser(nom, user);
+	}
+	
 	
 	public Image update(Image image) {
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

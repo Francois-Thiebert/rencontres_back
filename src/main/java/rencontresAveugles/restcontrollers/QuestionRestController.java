@@ -47,6 +47,14 @@ public class QuestionRestController {
 		return question;
 	}
 	
+	@GetMapping("/priorite/{prio}")
+	@JsonView(JsonViews.Question.class)
+	public List<Question> getByPriorite(@PathVariable Long prio) {
+		List<Question> questions = null;
+		questions = questionSrv.getByPriorite(prio);
+		return questions;
+	}
+	
 	@GetMapping("/{id}")
 	@JsonView(JsonViews.Simple.class)
 	public Question getById(@PathVariable Long id) {
@@ -70,6 +78,39 @@ public class QuestionRestController {
 	@JsonView(JsonViews.Question.class)
 	public Question update(@RequestBody Question question, @PathVariable Long id) {
 		Question questionEnBase = questionSrv.getById(id);
+		if (question.getIntitule() != null) {
+			questionEnBase.setIntitule(question.getIntitule());
+		}
+		if (question.getCorrespondance() != null) {
+			questionEnBase.setCorrespondance(question.getCorrespondance());
+		}
+		if (question.getPriorite() != null) {
+			questionEnBase.setPriorite(question.getPriorite());
+		}
+		if (question.getReponse1() != null) {
+			questionEnBase.setReponse1(question.getReponse1());
+		}
+		if (question.getReponse2() != null) {
+			questionEnBase.setReponse2(question.getReponse2());
+		}
+		if (question.getReponse3() != null) {
+			questionEnBase.setReponse3(question.getReponse3());
+		}
+		if (question.getReponse4() != null) {
+			questionEnBase.setReponse4(question.getReponse4());
+		}
+		if (question.getReponse5() != null) {
+			questionEnBase.setReponse5(question.getReponse5());
+		}
+		if (question.getReponse6() != null) {
+			questionEnBase.setReponse6(question.getReponse6());
+		}
+		if (question.getReponse7() != null) {
+			questionEnBase.setReponse7(question.getReponse7());
+		}
+		if (question.getReponse8() != null) {
+			questionEnBase.setReponse8(question.getReponse8());
+		}
 		questionSrv.update(questionEnBase);
 		return questionEnBase;
 	}

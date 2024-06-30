@@ -29,9 +29,9 @@ public class Image {
 	@Column(name="type")
 	@JsonView(JsonViews.Simple.class)
 	private String type;
-	@Column(name="nom")
+	@Column(name="numero")
 	@JsonView(JsonViews.Simple.class)
-	private String nom;
+	private int numero;
 	@Lob
 	@Column(name="bytes", length = 50000000)
 	@JsonView(JsonViews.Image.class)
@@ -57,10 +57,10 @@ public class Image {
 	}
 
 
-	public Image(String type, String nom, byte[] imageByte, User user) {
+	public Image(String type, int numero, byte[] imageByte, User user) {
 		super();
 		this.type = type;
-		this.nom = nom;
+		this.numero = numero;
 		this.imageByte = imageByte;
 		this.user = user;
 	}
@@ -74,6 +74,17 @@ public class Image {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+
+
+	public int getNumero() {
+		return numero;
+	}
+
+
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
 
 
 	public String getType() {
@@ -83,16 +94,6 @@ public class Image {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-
-	public String getNom() {
-		return nom;
-	}
-
-
-	public void setNom(String nom) {
-		this.nom = nom;
 	}
 
 

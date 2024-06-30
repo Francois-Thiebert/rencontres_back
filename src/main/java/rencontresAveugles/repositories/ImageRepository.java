@@ -14,7 +14,7 @@ public interface ImageRepository extends JpaRepository<Image, Long>{
 	
 	List<Image> findByUser(User user);
 	
-	@Query("SELECT i FROM Image i WHERE i.nom = :photoName AND i.user = :user")
-	Image findImage1ByUser(@Param("photoName") String photoName, @Param("user") User user);
+	@Query("SELECT i FROM Image i WHERE i.numero = :photoNumero AND i.user = :user")
+	Image findImage1ByUser(@Param("photoNumero") int numero, @Param("user") User user);
 
 }

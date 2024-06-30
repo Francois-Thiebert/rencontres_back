@@ -15,6 +15,7 @@ import rencontresAveugles.entities.Reponse;
 import rencontresAveugles.entities.User;
 import rencontresAveugles.exceptions.ReponseException;
 import rencontresAveugles.exceptions.UserException;
+import rencontresAveugles.repositories.QuestionRepository;
 import rencontresAveugles.repositories.ReponseRepository;
 
 @Service
@@ -24,6 +25,10 @@ public class ReponseService {
 	private ReponseRepository reponseRepo;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private QuestionService questionSrv;
+	@Autowired
+	private UserService userSrv;
 	
 	public Reponse create(Reponse reponse) {
 		Set<ConstraintViolation<Reponse>> violations = validator.validate(reponse);
@@ -49,6 +54,23 @@ public class ReponseService {
 	
 	public List<Reponse> getByQuestion(Question question) {
 		return reponseRepo.findByQuestion(question);
+	}
+	
+	public Reponse getByQuestionUserId(Long questionId, Long userId) {
+		Reponse reponse = new Reponse();
+		Question question = new Question();
+		User user = new User();
+		user = userSrv.getById(userId);
+		question = questionSrv.getById(questionId);
+		reponse = reponseRepo.findByQuestionUser(questionId, userId);
+		if(reponse == null) {
+			Reponse nouvReponse = new Reponse();
+			nouvReponse.setUser(user);
+			nouvReponse.setQuestion(question);
+			create(nouvReponse);
+			reponse = nouvReponse;
+		}
+		return reponse;
 	}
 	
 	public Reponse update(Reponse reponse) {

@@ -55,7 +55,7 @@ public class User implements UserDetails{
 	@JsonView(JsonViews.Simple.class)
 	private int age;
 	@OneToMany(mappedBy = "user")
-	@JsonView(JsonViews.UsertWithAll.class)
+	@JsonView({JsonViews.UsertWithAll.class, JsonViews.UsertWithReponse.class})
 	private Set<Reponse> reponses;
 	@Column (name = "login", nullable = false, unique = true)
 	@JsonView(JsonViews.Simple.class)

@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -26,6 +27,12 @@ public class Question {
 	@Column(name = "intitule")
 	@JsonView(JsonViews.Simple.class)
 	private String intitule;
+	@Column(name = "correspondance")
+	@JsonView(JsonViews.Simple.class)
+	private Long correspondance;
+	@Column(name ="priorite")
+	@JsonView(JsonViews.Simple.class)
+	private Long priorite;
 	@Column(name = "reponse1")
 	@JsonView(JsonViews.Simple.class)
 	private String reponse1;
@@ -58,10 +65,13 @@ public class Question {
 		super();
 	}
 
-	public Question(String intitule, String reponse1, String reponse2, String reponse3, String reponse4,
-			String reponse5, String reponse6, String reponse7, String reponse8) {
+	public Question(String intitule, Long correspondance, Long priorite, String reponse1, String reponse2,
+			String reponse3, String reponse4, String reponse5, String reponse6, String reponse7, String reponse8,
+			Set<Reponse> reponses) {
 		super();
 		this.intitule = intitule;
+		this.correspondance = correspondance;
+		this.priorite = priorite;
 		this.reponse1 = reponse1;
 		this.reponse2 = reponse2;
 		this.reponse3 = reponse3;
@@ -70,6 +80,7 @@ public class Question {
 		this.reponse6 = reponse6;
 		this.reponse7 = reponse7;
 		this.reponse8 = reponse8;
+		this.reponses = reponses;
 	}
 
 	public Long getId() {
@@ -86,6 +97,15 @@ public class Question {
 
 	public void setIntitule(String intitule) {
 		this.intitule = intitule;
+	}
+	
+
+	public Long getPriorite() {
+		return priorite;
+	}
+
+	public void setPriorite(Long priorite) {
+		this.priorite = priorite;
 	}
 
 	public String getReponse1() {
@@ -150,6 +170,22 @@ public class Question {
 
 	public void setReponse8(String reponse8) {
 		this.reponse8 = reponse8;
+	}
+
+	public Long getCorrespondance() {
+		return correspondance;
+	}
+
+	public void setCorrespondance(Long correspondance) {
+		this.correspondance = correspondance;
+	}
+
+	public Set<Reponse> getReponses() {
+		return reponses;
+	}
+
+	public void setReponses(Set<Reponse> reponses) {
+		this.reponses = reponses;
 	}
 
 	@Override

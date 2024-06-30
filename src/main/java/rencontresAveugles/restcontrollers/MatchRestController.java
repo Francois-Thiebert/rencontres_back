@@ -90,6 +90,14 @@ public class MatchRestController {
 	    return matchSrv.getMatchByUsers(idUser1, idUser2);
 	}
 	
+	@PutMapping("/newmatch/{id}")
+	@JsonView(JsonViews.Match.class)
+	public Match getNewMatch(@RequestBody List<User> users, @PathVariable Long id) {
+		User user = userSrv.getById(id);
+		Match newmatch = matchSrv.getNewMatch(user, users);
+		return newmatch;
+	}
+	
 //	@GetMapping("/user1/{idUser1}/user2/{idUser2}")
 //	@JsonView(JsonViews.Match.class)
 //	public List<Match> getMatchByUsers(@PathVariable Long idUser1, @PathVariable Long idUser2) {

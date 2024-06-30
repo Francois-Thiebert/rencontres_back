@@ -26,6 +26,10 @@ public class JsonViews {
 
 	}
 	
+	public static class UsertWithReponse extends User {
+
+	}
+	
 	public static class UsertWithAll extends User {
 
 	}

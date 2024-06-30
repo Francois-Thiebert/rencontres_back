@@ -16,6 +16,7 @@ import rencontresAveugles.entities.User;
 import rencontresAveugles.exceptions.QuestionException;
 import rencontresAveugles.exceptions.ReponseException;
 import rencontresAveugles.repositories.QuestionRepository;
+import rencontresAveugles.repositories.ReponseRepository;
 
 @Service
 public class QuestionService {
@@ -23,7 +24,11 @@ public class QuestionService {
 	@Autowired
 	private QuestionRepository questionRepo;
 	@Autowired
+	private ReponseRepository reponseRepo;
+	@Autowired
 	private Validator validator;
+	@Autowired
+	private ReponseService reponseSrv;;
 	
 	public Question create(Question question) {
 		Set<ConstraintViolation<Question>> violations = validator.validate(question);
@@ -43,12 +48,18 @@ public class QuestionService {
 		return questionRepo.findById(id).orElseThrow(QuestionException::new);
 	}
 	
+	public List<Question> getByPriorite(Long priorite) {
+		return questionRepo.findByPriorite(priorite);
+	}
+	
 	public Question update(Question question) {
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		Set<ConstraintViolation<Question>> violations = validator.validate(question);
 		if (violations.isEmpty()) {
 			Question questionEnBase = getById(question.getId());
 			questionEnBase.setIntitule(question.getIntitule());
+			questionEnBase.setCorrespondance(question.getCorrespondance());
+			questionEnBase.setPriorite(question.getPriorite());
 			questionEnBase.setReponse1(question.getReponse1());
 			questionEnBase.setReponse2(question.getReponse2());
 			questionEnBase.setReponse3(question.getReponse3());
@@ -62,17 +73,15 @@ public class QuestionService {
 			throw new QuestionException();
 		}
 	}
-
-	public void delete(Question question) {
-		questionRepo.delete(question);
-	}
 	
 	public void deleteByQuestion(Question question) {
 		Question questionEnBase = questionRepo.findById(question.getId()).orElseThrow(QuestionException::new);
+		reponseRepo.deleteReponseByQuestion(questionEnBase.getId());
 		questionRepo.delete(questionEnBase);
 	}
 	public void deleteByQuestionId(Long questionId) {
 	    Question questionEnBase = questionRepo.findById(questionId).orElseThrow(QuestionException::new);
+	    reponseRepo.deleteReponseByQuestion(questionEnBase.getId());
 	    questionRepo.delete(questionEnBase);
 	}
 

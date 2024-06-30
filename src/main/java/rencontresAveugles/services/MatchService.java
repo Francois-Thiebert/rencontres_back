@@ -1,6 +1,9 @@
 package rencontresAveugles.services;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +32,10 @@ public class MatchService {
 	private UserRepository userRepo;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private ReponseService reponseSrv;
+	@Autowired
+	private UserService userSrv;
 	
 	public Match create(Match match) {
 		Set<ConstraintViolation<Match>> violations = validator.validate(match);
@@ -46,6 +53,78 @@ public class MatchService {
 
 	public Match getById(Long id) {
 		return matchRepo.findById(id).orElseThrow(MatchException::new);
+	}
+	
+	public Match getNewMatch(User user, List<User> users) {
+		Match match = new Match();
+		List<Reponse> reponsesUser = reponseSrv.getByUser(user);
+		Iterator<Reponse> iterator = reponsesUser.iterator();
+		while (iterator.hasNext()) {
+		    Reponse r = iterator.next();
+		    if (r.getQuestion().getId() == 18 || r.getQuestion().getId() == 19) {
+		        iterator.remove();
+		    }
+		}
+		List<Match> matchsPotentiels= new ArrayList<>();
+		System.out.println("-----------------Creation des matchs potentiels-----------------------");
+		for(User u: users) {
+			Match matchPotentiel = new Match();
+			matchPotentiel.setId(u.getId());
+			matchsPotentiels.add(matchPotentiel);
+			//System.out.println("le match "+matchPotentiel.getId()+" est ajouté à la liste des matchs potentiels");
+		}
+		//System.out.println("il y a "+matchsPotentiels.size()+" matchs potentiels dans la liste");
+		System.out.println("-----------------Gestion des compatibilités-----------------------");
+		for(Reponse r: reponsesUser) {
+			//System.out.println("boucle : pour chaque réponse de l'utilisateur");
+			if(r.getNumeroReponse() != 1) {
+				//System.out.println("SI : le numéro de réponse est différent de 1");
+				for(User u: users) {
+					//System.out.println("boucle : pour chaque utilisateur de la liste users");
+					Reponse reponseAutre = reponseSrv.getByQuestionUserId(r.getQuestion().getId(), u.getId());
+					//System.out.println("la réponse à la question numéro "+r.getQuestion().getId()+" de l'utilisateur distant numéro "+u.getId()+" est : "+reponseAutre.getNumeroReponse());
+					if(reponseAutre.getNumeroReponse() == r.getNumeroReponse()) {
+						//System.out.println("SI : les deux réponses sont égales : "+ r.getNumeroReponse()+" et "+ reponseAutre.getNumeroReponse());
+						for (Match m: matchsPotentiels) {
+							//System.out.println("boucle : pour chaque match potentiel");
+							//System.out.println("l'id du match potentiel est : "+m.getId()+" et l'id du user distant est : "+u.getId());
+							if (m.getId() == u.getId()) {
+								//System.out.println("SI : l'id du match potentiel est égal à l'id du user distant");
+								int newCompatibilite = m.getCompatibilite()+1;
+								m.setCompatibilite(newCompatibilite);
+								//System.out.println("le match potentiel numéro "+m.getId()+" gagne +1 en compatibilité");
+							}
+						}
+					}
+				}
+			}
+		}
+		for (Match m: matchsPotentiels) {
+			int compatibilite = m.getCompatibilite();
+			int nombreDeReponses = reponsesUser.size();
+			int pourcentCompatibilite = (int) (((double) compatibilite / nombreDeReponses) * 100);
+			m.setCompatibilite(pourcentCompatibilite);
+			System.out.println("le match potentiel numéro : "+m.getId()+" compte : "+m.getCompatibilite()+"% de compatibilité");
+		}
+		if (!matchsPotentiels.isEmpty()) {
+	        Match matchOptimal = matchsPotentiels.get(0);
+	        
+	        for (int i = 1; i < matchsPotentiels.size(); i++) {
+	            Match matchCourant = matchsPotentiels.get(i);
+
+	            if (matchCourant.getCompatibilite() > matchOptimal.getCompatibilite()) {
+	                matchOptimal = matchCourant;
+	            }
+	        }
+	        match=matchOptimal;
+	        match.setCompatibilite(matchOptimal.getCompatibilite());
+	        match.setUser1(userSrv.getById(user.getId()));
+	        match.setUser2(userSrv.getById(matchOptimal.getId()));
+	        match.setId(null);
+	        match.setDate(LocalDate.now());
+	        match.setCompteur(0);
+		}
+		return match;
 	}
 
 	public List<Match> getAllByUser(Long id) {

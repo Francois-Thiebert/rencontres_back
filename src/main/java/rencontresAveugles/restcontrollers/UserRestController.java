@@ -62,6 +62,26 @@ public class UserRestController {
 		return user;
 	}
 	
+	//Retourne la liste des users impliqués en match avec le user en paramètre
+	@GetMapping("/matchs/{id}")
+	@JsonView(JsonViews.UsertWithReponse.class)
+	public List<User> getUsersMatch(@PathVariable Long id) {
+		User user = getById(id);
+		List<User> users = null;
+		users = userSrv.getByMatchs(user);
+		return users;
+	}
+	
+	//Retourne la liste des ID des users impliqués en match avec le user en paramètre
+		@GetMapping("/idByMatchs/{id}")
+		@JsonView(JsonViews.Simple.class)
+		public List<Long> getUsersIdByMatchs(@PathVariable Long id) {
+			User user = getById(id);
+			List<Long> usersIds = null;
+			usersIds = userSrv.getIDsByMatchs(user);
+			return usersIds;
+		}
+	
 	@GetMapping("/login/check/{login}")
 	public boolean loginExist(@PathVariable String login) {
 		return userSrv.loginExist(login);
@@ -125,6 +145,9 @@ public class UserRestController {
 		}
 		if (user.getPassword() != null) {
 			userEnBase.setPassword(user.getPassword());
+		}
+		if (user.getPhotos() != null) {
+			userEnBase.setPhotos(user.getPhotos());
 		}
 		userEnBase.setAge(user.getAge());
 		userSrv.update(userEnBase);
